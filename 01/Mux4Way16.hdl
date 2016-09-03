@@ -16,5 +16,9 @@ CHIP Mux4Way16 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Or (a=sel[0], b=sel[1], out=selIsB);
+    Mux16 (a=a, b=b, sel=selIsB, out=muxAB);
+    And (a=sel[0], b=sel[1], out=selIsD);
+    Mux16 (a=c, b=d, sel=selIsD, out=muxCD);
+    Mux16 (a=muxAB, b=muxCD, sel=sel[1], out=out);
 }
