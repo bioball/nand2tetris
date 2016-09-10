@@ -42,5 +42,44 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // if (zx == 1) set x = 0
+    Mux16 (a=x, sel=zx, out=iZX);
+
+    // if (nx == 1) set x = !x
+    // get !x
+    Not16 (in=iZX, out=iZNX);
+    // use Mux to choose the correct output.
+    Mux16 (a=iZX, b=iZNX, sel=nx, out=iZZNX);
+
+
+    // if (zy == 1) set y = 0
+    Mux16 (a=y, sel=zy, out=iZY);
+
+    // if (ny == 1) set y = !y
+    // get !y
+    Not16 (in=iZY, out=iZNY);
+    // use Mux to choose the correct output.
+    Mux16 (a=iZY, b=iZNY, sel=ny, out=iZZNY);
+
+
+    // compute x + y
+    Add16 (a=iZZNX, b=iZZNY, out=sumXY);
+
+    // computer x & y
+    And16 (a=iZZNX, b=iZZNY, out=andXY);
+
+    // out = x + y (if 1) or x & y (if 0)
+    Mux16 (a=andXY, b=sumXY, sel=f, out=iF);
+
+    // compute Not F
+    Not16 (in=iF, out=iNotF);
+
+    // out = !out if F. Set to out.
+    // Additionally, number is negative if the MSB is 1. Set to ng.
+    Mux16(a=iF, b=iNotF, sel=no, out=out, out[15]=ng, out=iOut);
+
+    // Out is 0 if the OR of all zeroes and OUT is equal to OUT.
+    Or16Way (in=iOut, out=or16Out);
+    Not (in=or16Out, out=zr);
+
 }
