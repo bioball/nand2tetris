@@ -78,7 +78,7 @@ CHIP ALU {
     // Additionally, number is negative if the MSB is 1. Set to ng.
     Mux16(a=iF, b=iNotF, sel=no, out=out, out[15]=ng, out=iOut);
 
-    // Out is 0 if the OR of all zeroes and OUT is equal to OUT.
+    // Out is 0 if the Or16Way of OUT is 0.
     Or16Way (in=iOut, out=or16Out);
     Not (in=or16Out, out=zr);
 
