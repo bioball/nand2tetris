@@ -16,5 +16,16 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+
+    // Perform add 1
+    Add16 (a=iOut, b[0]=true, out=inPlusOne);
+    // If inc is 1, add one
+    Mux16 (a=iOut, b=inPlusOne, sel=inc, out=inPlusOneIfInc);
+    // Else if load is 1, output in
+    Mux16 (a=inPlusOneIfInc, b=in, sel=load, out=loadIfLoad);
+    // Else if reset is 1, output 0
+    Mux16 (a=loadIfLoad, sel=reset, out=zeroIfReset);
+    // Pipe to a register
+    Register (in=zeroIfReset, load=true, out=iOut, out=out);
+
 }
