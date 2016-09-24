@@ -52,7 +52,7 @@ M=0
         @8192
         D=D-A;
 
-        // If i has reached 16K, jump back to the parent loop
+        // If i has reached 8K, jump back to the parent loop
         @LOOP
         D;JEQ
 
@@ -99,7 +99,7 @@ M=0
         @8192
         D=D-A;
 
-        // If i has reached 16K, jump back to the parent loop
+        // If i has reached 8K, jump back to the parent loop
         @LOOP
         D;JEQ
 
