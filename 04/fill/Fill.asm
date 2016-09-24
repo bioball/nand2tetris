@@ -15,18 +15,18 @@
 M=0
 
 (LOOP)
-    
-    // if key is pressed, jump to BLACK
-    @KBD
-    D=M
-    @BLACK
-    D;JNE
+  
+  // if key is pressed, jump to BLACK
+  @KBD
+  D=M
+  @BLACK
+  D;JNE
 
-    // else, jump to WHITE
-    @WHITE
-    0;JMP
+  // else, jump to WHITE
+  @WHITE
+  0;JMP
 
-(BLACK)
+  (BLACK)
 
     // if current_black is already non-zero, this is a no-op and we can go back to our loop.
     @current_black
@@ -44,37 +44,37 @@ M=0
 
     // for each register in SCREEN, set it to -1
     (BLACKLOOP)
-        // get the value of i
-        @i
-        D=M
+      // get the value of i
+      @i
+      D=M
 
-        // Determine if i has reached the total number of registers we need to write to.
-        @8192
-        D=D-A;
+      // Determine if i has reached the total number of registers we need to write to.
+      @8192
+      D=D-A;
 
-        // If i has reached 8K, jump back to the parent loop
-        @LOOP
-        D;JEQ
+      // If i has reached 8K, jump back to the parent loop
+      @LOOP
+      D;JEQ
 
-        // get the value of i again
-        @i
-        D=M
+      // get the value of i again
+      @i
+      D=M
 
-        // access SCREEN[i], set it to -1
-        @SCREEN
-        A=A+D
-        M=-1
+      // access SCREEN[i], set it to -1
+      @SCREEN
+      A=A+D
+      M=-1
 
-        // increase i by 1
-        @i
-        M=M+1
+      // increase i by 1
+      @i
+      M=M+1
 
-        // repeat.
-        @BLACKLOOP
-        0;JMP
+      // repeat.
+      @BLACKLOOP
+      0;JMP
 
 
-(WHITE)
+  (WHITE)
     // if current_black is already zero, this is a no-op and we can go back to our loop
     @current_black
     D=M
@@ -91,31 +91,31 @@ M=0
     M=0
 
     (WHITELOOP)
-        // get the value of i
-        @i
-        D=M
+      // get the value of i
+      @i
+      D=M
 
-        // Determine if i has reached the total number of registers we need to write to.
-        @8192
-        D=D-A;
+      // Determine if i has reached the total number of registers we need to write to.
+      @8192
+      D=D-A;
 
-        // If i has reached 8K, jump back to the parent loop
-        @LOOP
-        D;JEQ
+      // If i has reached 8K, jump back to the parent loop
+      @LOOP
+      D;JEQ
 
-        // get the value of i again
-        @i
-        D=M
+      // get the value of i again
+      @i
+      D=M
 
-        // access SCREEN[i], set it to 0
-        @SCREEN
-        A=A+D
-        M=0
+      // access SCREEN[i], set it to 0
+      @SCREEN
+      A=A+D
+      M=0
 
-        // increase i by 1
-        @i
-        M=M+1
+      // increase i by 1
+      @i
+      M=M+1
 
-        // repeat.
-        @WHITELOOP
-        0;JMP
+      // repeat.
+      @WHITELOOP
+      0;JMP
