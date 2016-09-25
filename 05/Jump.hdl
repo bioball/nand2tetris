@@ -1,0 +1,39 @@
+/**
+ * Jump chip. Determines whether we should jump or not.
+ * j1 j2 j3  symbol   Meaning
+ * 0  0  0   null                 0
+ * 0  0  1   JGT      If in > 0   1
+ * 0  1  0   JEQ      If in = 0   1
+ * 0  1  1   JGE      If in >= 0  1
+ * 1  0  0   JLT      If in < 0   1
+ * 1  0  1   JNE      If in != 0  1
+ * 1  1  0   JLE      If in <= 0  1
+ * 1  1  1   JMP                  1
+ */
+
+
+CHIP Jump {
+  IN  zr,
+      ng,
+      j1,
+      j2,
+      j3;
+  OUT out;
+
+  PARTS:
+    // GT
+    Not(in=zr, out=notZero);
+    Not(in=ng, out=notNegative);
+    And(a=notZero, b=notNegative, out=gt);
+    And(a=gt, b=j3, out=jj3);
+
+    // EQ
+    And(a=zr, b=j2, out=jj2);
+
+    // LT
+    And(a=ng, b=j1, out=jj1);
+
+    // if any of these are truthy, jump!
+    Or(a=jj1, b=jj2, out=jj1Orjj2);
+    Or(a=jj1Orjj2, b=jj3, out=out);
+}

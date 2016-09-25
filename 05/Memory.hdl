@@ -27,5 +27,15 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // Determine whether any chip should carry LOAD.
+    // (a OR b) represent the RAM16K range, c represents the Screen (8K) range, and d is discarded and not used.
+    DMux4Way(in=load, sel=address[13..14], a=a, b=b, c=c, d=d);
+    Or(a=a, b=b, out=load16K);
+
+    RAM16K(in=in, load=load16K, address=address[0..13], out=ram16K);
+    Screen(in=in, load=c, address=address[0..12], out=screen);
+    Keyboard(out=keyboard);
+
+    // naive way of doing this; everything above 0xFFFF is keyboard.
+    Mux4Way16(a=ram16K, b=ram16K, c=screen, d=keyboard, sel=address[13..14], out=out);
 }

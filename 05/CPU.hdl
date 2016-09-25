@@ -39,5 +39,76 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+
+    /**
+     * A register
+     */
+    // if instruction[15] is 0, this is an A instruction.
+    Not(in=instruction[15], out=instructionA);
+
+    // If this is an A instruction, or this is a C instruction with instruction[5], we want to write to registerA.
+    And(a=instruction[15], b=instruction[5], out=cInstructWriteA);
+    Or(a=instructionA, b=cInstructWriteA, out=writeA);
+
+    // In the case of a C instruction, we want to write the output of the ALU.
+    // In the case of an A instruction, we want to write the value of instruction.
+    Mux16(a[0..14]=instruction[0..14], b=internalCInstructionOut, sel=instruction[15], out=muxRegisterA);
+
+    // Write to Register A.
+    ARegister(in=muxRegisterA, load=writeA, out=registerA, out[0..14]=addressM);
+
+
+    /**
+     * D register
+     * If the 4th bit is 5, and this is a C instruction, write to register D.
+     */
+    And(a=instruction[15], b=instruction[4], out=writeD);
+    DRegister(in=internalCInstructionOut, load=writeD, out=registerD);
+
+
+    /**
+     * C instruction
+     * The ALU's `x` is always D.
+     * The ALU's `y` is determined by the 13th bit.
+     */
+    
+    // the instruction's 13th bit determines whether the ALU's `y` input is A or M.
+    Mux16(a=registerA, b=inM, sel=instruction[12], out=aluY);
+
+    // feed the control bits, the D register, and the A or M register into the ALU.
+    ALU(
+        x=registerD,
+        y=aluY,
+        no=instruction[6],
+        f=instruction[7],
+        ny=instruction[8],
+        zy=instruction[9],
+        nx=instruction[10],
+        zx=instruction[11],
+        out=outM,
+        out=internalCInstructionOut,
+        zr=zr,
+        ng=ng
+    );
+
+    // If the 4th bit is 1, and this is a C instruction, we want to write to M.
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+
+    /**
+     * Jump
+     */
+    Jump(zr=zr, ng=ng, j1=instruction[2], j2=instruction[1], j3=instruction[0], out=iJump);
+    And(a=iJump, b=instruction[15], out=jump);
+
+    /**
+     * Program counter. 
+     * In is always the value of register A
+     * Should load if jump is 1
+     * Should always increase (this is overridden by jump.)
+     * reset gets wired directly into here.
+     * output gets wired directly to pc.
+     */
+    PC(in=registerA, load=jump, out[0..14]=pc, inc=true, reset=reset);
+
 }
