@@ -1,2 +1,7 @@
 *.out
 *.zip
+.idea/
+target/
+project/target/
+output/
+.DS_Store
