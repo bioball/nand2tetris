@@ -1,23 +1,36 @@
 // This file is part of www.nand2tetris.org
 // and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
-// File name: projects/10/ExpressionlessSquare/Main.jack
+// File name: projects/10/ExpressionLessSquare/Main.jack
 
-// Expressionless version of Main.jack.
+/** Expressionless version of projects/10/Square/Main.jack. */
 
-/**
- * The Main class initializes a new Square Dance game and starts it.
- */
 class Main {
+    static boolean test;    // Added for testing -- there is no static keyword
+                            // in the Square files.
 
-    // Initializes the square game and starts it.
     function void main() {
         var SquareGame game;
-
         let game = game;
         do game.run();
-		do game.dispose();
+        do game.dispose();
+        return;
+    }
 
+    function void test() {  // Added to test Jack syntax that is not use in
+        var int i, j;       // the Square files.
+        var String s;
+        var Array a;
+        if (i) {
+            let s = i;
+            let s = j;
+            let a[i] = j;
+        }
+        else {              // There is no else keyword in the Square files.
+            let i = i;
+            let j = j;
+            let i = i | j;
+        }
         return;
     }
 }

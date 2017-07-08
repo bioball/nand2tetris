@@ -6,9 +6,9 @@
 /** Test program for the OS Math class. */
 class Main {
 
-    /** Performs several mathematical operations from the Math class. */
+    /** Performs various mathematical operations, using calls to the Math class methods. */
     function void main() {
-        var Array r;          // stores test results;
+        var Array r;          // stores the test results;
         
         let r = 8000;
     
@@ -32,5 +32,4 @@ class Main {
         
         return;
     }
-
 }
