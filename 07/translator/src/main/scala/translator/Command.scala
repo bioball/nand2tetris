@@ -16,9 +16,7 @@ object Command {
  * Created by danielchao on 7/8/17.
  */
 sealed trait Command
-
-sealed trait Arithmetic extends Command
-case object Add extends Arithmetic {
+case object Add extends Command {
   override def toString =
     """
       |// *** add ***
@@ -42,7 +40,7 @@ case object Add extends Arithmetic {
       |M=A
     """.stripMargin
 }
-case object Subtract extends Arithmetic {
+case object Subtract extends Command {
   override def toString =
     """
       |// *** sub ***
@@ -68,8 +66,7 @@ case object Subtract extends Arithmetic {
     """.stripMargin
 }
 
-sealed trait PushPop extends Command
-case class Push(segment: Segment, index: Int) extends PushPop {
+case class Push(segment: Segment, index: Int) extends Command {
   override def toString = segment match {
     case sgmt: FixedSegment =>
       s"""
@@ -81,4 +78,4 @@ case class Push(segment: Segment, index: Int) extends PushPop {
   }
 }
 
-case class Pop(segment: Segment, index: Int) extends PushPop
+case class Pop(segment: Segment, index: Int) extends Command
