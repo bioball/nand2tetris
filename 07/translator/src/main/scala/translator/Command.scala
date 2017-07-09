@@ -6,13 +6,13 @@ object Command {
   def parse(unparsed: String, filename: String): Option[Command] = unparsed match {
     case "add" => Some(Add)
     case "sub" => Some(Subtract)
-//    case "eq" =>
-//    case "lt" =>
-//    case "gt" =>
-//    case "neg" =>
-//    case "and" =>
-//    case "or" =>
-//    case "not" =>
+    case "eq" => Some(Equals)
+    case "lt" => Some(LessThan)
+    case "gt" => Some(GreaterThan)
+    case "neg" => Some(Negative)
+    case "and" => Some(And)
+    case "or" => Some(Or)
+    case "not" => Some(Not)
     case PUSH_REGEX(segment, idx) => Segment.unapply(segment).map(Push(_, idx.toInt, filename))
     case POP_REGEX(segment, idx) => Segment.unapply(segment).map(Pop(_, idx.toInt, filename))
     case other => None
@@ -24,10 +24,32 @@ object Command {
  */
 sealed trait Command
 
-case object Add extends Command {
+abstract class ArithmeticCommand(symbol: String) extends Command {
   override def toString =
-    """
-      |// *** add ***
+    s"""
+      |// *** arithmetic $symbol ***
+      |
+      |// Get value of M[SP-1], store in D
+      |@SP
+      |M=M-1 // Decrement stack pointer.
+      |A=M // Get address of pointer, store in A.
+      |D=M // Get value at pointer address, store in D.
+      |
+      |// Get value of M[SP-2]
+      |@SP
+      |M=M-1 // Decrement stack pointer.
+      |A=M // get address of pointer, store in A.
+      |M=M${symbol}D // get value at pointer address, and perform computation. Store value in M.
+      |
+      |@SP
+      |M=M+1 // Increment stack pointer.
+    """.stripMargin
+}
+
+abstract class ComparisonCommand(jmpCmd: String) extends Command {
+  override def toString =
+    s"""
+      |// *** comparison: $jmpCmd ***
       |
       |// Get value of M[SP-1], store in D
       |@SP
@@ -39,42 +61,75 @@ case object Add extends Command {
       |@SP
       |M=M-1 // Decrement stack pointer.
       |A=M // get address of pointer, store in A.
-      |M=M+D // store result back at register.
       |
+      |@COMPARETRUE
+      |M-D;$jmpCmd // subtract that value from D, and compared to zero. Jump based on comparison.
+      |// if we reach here, the comparison has failed.
       |@SP
+      |A=M
+      |M=0
+      |(COMPARETRUE)
+      |@SP
+      |A=M
+      |M=1
+      |
       |M=M+1 // Increment stack pointer.
     """.stripMargin
 }
 
-case object Subtract extends Command {
+abstract class CombiningCommand(combination: String) extends Command {
   override def toString =
-    """
-      |// *** sub ***
+    s"""
+       |// *** combination: $combination ***
+       |
+       |// Get value of M[SP-1], store in D
+       |@SP
+       |M=M-1 // Decrement stack pointer.
+       |A=M // Get address of pointer, store in A.
+       |D=M // Get value at pointer address, store in D.
+       |
+       |// Get value of M[SP-2]. Add to D.
+       |@SP
+       |M=M-1 // Decrement stack pointer.
+       |A=M // get address of pointer, store in A.
+       |
+       |//
+       |D=M${combination}D
+       |@SP
+       |A=M
+       |M=D
+       |
+       |@SP
+       |M=M+1 // Increment stack pointer.
+    """.stripMargin
+}
+
+abstract class FlippingCommand(flip: String) extends Command {
+  override def toString =
+    s"""
+      |// *** flip: $flip ***
       |
       |// Get value of M[SP-1], store in D
       |@SP
       |M=M-1 // Decrement stack pointer.
       |A=M // Get address of pointer, store in A.
-      |D=M // Get value at pointer address, store in D.
-      |
-      |// Get value of M[SP-2]. Add to D.
-      |@SP
-      |M=M-1 // Decrement stack pointer.
-      |A=M // get address of pointer, store in A.
-      |M=M-D // get value at pointer address, and subtract D from it. Store value in M.
+      |M=${flip}M // flip it!
       |
       |@SP
-      |M=M+1 // Increment stack pointer.
+      |M=M+1 // increment stack pointer.
     """.stripMargin
 }
 
-case object Equals extends Command {
-  override def toString =
-    """
-      |// *** eq ***
-      |
-    """.stripMargin
-}
+
+case object Add extends ArithmeticCommand("+")
+case object Subtract extends ArithmeticCommand("-")
+case object Equals extends ComparisonCommand("JEQ")
+case object LessThan extends ComparisonCommand("JLT")
+case object GreaterThan extends ComparisonCommand("JGT")
+case object And extends CombiningCommand("&")
+case object Or extends CombiningCommand("|")
+case object Negative extends FlippingCommand("-")
+case object Not extends FlippingCommand("!")
 
 case class Push(segment: Segment, index: Int, filename: String) extends Command {
   override def toString = segment match {
@@ -135,13 +190,11 @@ case class Pop(segment: Segment, index: Int, filename: String) extends Command {
       s"""
         |// *** pop $segment $index
         |
-        |// get index $index of the $segment segment, store in ${sgmt.register}
+        |// get register that we should pop into, store at @R13.
         |@$index
         |D=A
         |${sgmt.register}
         |D=D+M // set the target address of our popped value in D
-        |
-        |// store the target address in R13.
         |@R13
         |M=D
         |
@@ -150,9 +203,10 @@ case class Pop(segment: Segment, index: Int, filename: String) extends Command {
         |A=M // set A to value contained at address referenced by stack pointer.
         |D=M // get the value at that address, store in D
         |
+        |// store our popped value in the target address.
         |@R13
         |A=M
-        |M=D // store our popped value in the target address.
+        |M=D
       """.stripMargin
     case sgmt: PredeterminedSegment =>
       val register = sgmt.register(index, filename)
