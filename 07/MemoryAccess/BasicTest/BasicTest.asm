@@ -15,13 +15,11 @@ M=M+1 // increment stack pointer
 
 // *** pop Local 0
 
-// get index 0 of the Local segment, store in @1
+// get register that we should pop into, store at @R13.
 @0
 D=A
 @1
 D=D+M // set the target address of our popped value in D
-
-// store the target address in R13.
 @R13
 M=D
 
@@ -30,9 +28,10 @@ M=M-1 // decrement stack pointer
 A=M // set A to value contained at address referenced by stack pointer.
 D=M // get the value at that address, store in D
 
+// store our popped value in the target address.
 @R13
 A=M
-M=D // store our popped value in the target address.
+M=D
       
 
 //--------------------------------------
@@ -68,13 +67,11 @@ M=M+1 // increment stack pointer
 
 // *** pop Arg 2
 
-// get index 2 of the Arg segment, store in @2
+// get register that we should pop into, store at @R13.
 @2
 D=A
 @2
 D=D+M // set the target address of our popped value in D
-
-// store the target address in R13.
 @R13
 M=D
 
@@ -83,9 +80,10 @@ M=M-1 // decrement stack pointer
 A=M // set A to value contained at address referenced by stack pointer.
 D=M // get the value at that address, store in D
 
+// store our popped value in the target address.
 @R13
 A=M
-M=D // store our popped value in the target address.
+M=D
       
 
 //--------------------------------------
@@ -93,13 +91,11 @@ M=D // store our popped value in the target address.
 
 // *** pop Arg 1
 
-// get index 1 of the Arg segment, store in @2
+// get register that we should pop into, store at @R13.
 @1
 D=A
 @2
 D=D+M // set the target address of our popped value in D
-
-// store the target address in R13.
 @R13
 M=D
 
@@ -108,9 +104,10 @@ M=M-1 // decrement stack pointer
 A=M // set A to value contained at address referenced by stack pointer.
 D=M // get the value at that address, store in D
 
+// store our popped value in the target address.
 @R13
 A=M
-M=D // store our popped value in the target address.
+M=D
       
 
 //--------------------------------------
@@ -132,13 +129,11 @@ M=M+1 // increment stack pointer
 
 // *** pop This 6
 
-// get index 6 of the This segment, store in @3
+// get register that we should pop into, store at @R13.
 @6
 D=A
 @3
 D=D+M // set the target address of our popped value in D
-
-// store the target address in R13.
 @R13
 M=D
 
@@ -147,9 +142,10 @@ M=M-1 // decrement stack pointer
 A=M // set A to value contained at address referenced by stack pointer.
 D=M // get the value at that address, store in D
 
+// store our popped value in the target address.
 @R13
 A=M
-M=D // store our popped value in the target address.
+M=D
       
 
 //--------------------------------------
@@ -185,13 +181,11 @@ M=M+1 // increment stack pointer
 
 // *** pop That 5
 
-// get index 5 of the That segment, store in @4
+// get register that we should pop into, store at @R13.
 @5
 D=A
 @4
 D=D+M // set the target address of our popped value in D
-
-// store the target address in R13.
 @R13
 M=D
 
@@ -200,9 +194,10 @@ M=M-1 // decrement stack pointer
 A=M // set A to value contained at address referenced by stack pointer.
 D=M // get the value at that address, store in D
 
+// store our popped value in the target address.
 @R13
 A=M
-M=D // store our popped value in the target address.
+M=D
       
 
 //--------------------------------------
@@ -210,13 +205,11 @@ M=D // store our popped value in the target address.
 
 // *** pop That 2
 
-// get index 2 of the That segment, store in @4
+// get register that we should pop into, store at @R13.
 @2
 D=A
 @4
 D=D+M // set the target address of our popped value in D
-
-// store the target address in R13.
 @R13
 M=D
 
@@ -225,9 +218,10 @@ M=M-1 // decrement stack pointer
 A=M // set A to value contained at address referenced by stack pointer.
 D=M // get the value at that address, store in D
 
+// store our popped value in the target address.
 @R13
 A=M
-M=D // store our popped value in the target address.
+M=D
       
 
 //--------------------------------------
@@ -247,7 +241,7 @@ M=M+1 // increment stack pointer
 //--------------------------------------
 
 
-// *** pop temp 6
+// *** pop Temp 6
 
 @SP
 M=M-1
@@ -299,7 +293,7 @@ M=M+1 // Increment stack pointer
 //--------------------------------------
 
 
-// *** add ***
+// *** arithmetic + ***
 
 // Get value of M[SP-1], store in D
 @SP
@@ -307,12 +301,11 @@ M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
-D=M+D // get value at pointer address, and add D to it. Store value in D.
-M=D // store result back at register.
+M=M+D // get value at pointer address, and perform computation. Store value in M.
 
 @SP
 M=M+1 // Increment stack pointer.
@@ -340,7 +333,7 @@ M=M+1 // Increment stack pointer
 //--------------------------------------
 
 
-// *** sub ***
+// *** arithmetic - ***
 
 // Get value of M[SP-1], store in D
 @SP
@@ -348,11 +341,11 @@ M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
-M=M-D // get value at pointer address, and subtract D from it. Store value in M.
+M=M-D // get value at pointer address, and perform computation. Store value in M.
 
 @SP
 M=M+1 // Increment stack pointer.
@@ -399,7 +392,7 @@ M=M+1 // Increment stack pointer
 //--------------------------------------
 
 
-// *** add ***
+// *** arithmetic + ***
 
 // Get value of M[SP-1], store in D
 @SP
@@ -407,12 +400,11 @@ M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
-D=M+D // get value at pointer address, and add D to it. Store value in D.
-M=D // store result back at register.
+M=M+D // get value at pointer address, and perform computation. Store value in M.
 
 @SP
 M=M+1 // Increment stack pointer.
@@ -421,7 +413,7 @@ M=M+1 // Increment stack pointer.
 //--------------------------------------
 
 
-// *** sub ***
+// *** arithmetic - ***
 
 // Get value of M[SP-1], store in D
 @SP
@@ -429,11 +421,11 @@ M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
-M=M-D // get value at pointer address, and subtract D from it. Store value in M.
+M=M-D // get value at pointer address, and perform computation. Store value in M.
 
 @SP
 M=M+1 // Increment stack pointer.
@@ -442,7 +434,7 @@ M=M+1 // Increment stack pointer.
 //--------------------------------------
 
 
-// *** push temp 6
+// *** push Temp 6
 
 @11
 D=M
@@ -458,7 +450,7 @@ M=M+1
 //--------------------------------------
 
 
-// *** add ***
+// *** arithmetic + ***
 
 // Get value of M[SP-1], store in D
 @SP
@@ -466,12 +458,11 @@ M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
-D=M+D // get value at pointer address, and add D to it. Store value in D.
-M=D // store result back at register.
+M=M+D // get value at pointer address, and perform computation. Store value in M.
 
 @SP
 M=M+1 // Increment stack pointer.

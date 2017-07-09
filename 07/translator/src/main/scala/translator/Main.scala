@@ -20,7 +20,8 @@ object Main {
     val lines = Source.fromFile(args(0)).getLines().toSeq
     val srcFilename = args(0).split("/").last
     val commands = lines
-      .flatMap(Command.parse(_, srcFilename))
+      .zipWithIndex
+      .flatMap({ case (line, idx) => Command.parse(line, srcFilename, idx) })
     val asm = commands.mkString("\n\n//--------------------------------------\n\n")
     val filename = args(0).replaceAll("""\.vm""", ".asm")
     writeFile(filename, asm)

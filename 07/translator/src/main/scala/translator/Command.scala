@@ -3,12 +3,12 @@ package translator
 object Command {
   val PUSH_REGEX = """^push\s(\w+)\s(\d+)$""".r
   val POP_REGEX = """^pop\s(\w+)\s(\d+)$""".r
-  def parse(unparsed: String, filename: String): Option[Command] = unparsed match {
+  def parse(unparsed: String, filename: String, index: Int): Option[Command] = unparsed match {
     case "add" => Some(Add)
     case "sub" => Some(Subtract)
-    case "eq" => Some(Equals)
-    case "lt" => Some(LessThan)
-    case "gt" => Some(GreaterThan)
+    case "eq" => Some(Equals(index))
+    case "lt" => Some(LessThan(index))
+    case "gt" => Some(GreaterThan(index))
     case "neg" => Some(Negative)
     case "and" => Some(And)
     case "or" => Some(Or)
@@ -46,7 +46,8 @@ abstract class ArithmeticCommand(symbol: String) extends Command {
     """.stripMargin
 }
 
-abstract class ComparisonCommand(jmpCmd: String) extends Command {
+// index is passed in so we can make the labels unique.
+abstract class ComparisonCommand(jmpCmd: String, index: Int) extends Command {
   override def toString =
     s"""
       |// *** comparison: $jmpCmd ***
@@ -62,13 +63,13 @@ abstract class ComparisonCommand(jmpCmd: String) extends Command {
       |M=M-1 // Decrement stack pointer.
       |A=M // get address of pointer, store in A.
       |
-      |@COMPARETRUE
+      |@COMPARETRUE_$index // need to make these labels unique.
       |M-D;$jmpCmd // subtract that value from D, and compared to zero. Jump based on comparison.
       |// if we reach here, the comparison has failed.
       |@SP
       |A=M
       |M=0
-      |(COMPARETRUE)
+      |(COMPARETRUE_$index)
       |@SP
       |A=M
       |M=1
@@ -123,9 +124,9 @@ abstract class FlippingCommand(flip: String) extends Command {
 
 case object Add extends ArithmeticCommand("+")
 case object Subtract extends ArithmeticCommand("-")
-case object Equals extends ComparisonCommand("JEQ")
-case object LessThan extends ComparisonCommand("JLT")
-case object GreaterThan extends ComparisonCommand("JGT")
+case class Equals(index: Int) extends ComparisonCommand("JEQ", index)
+case class LessThan(index: Int) extends ComparisonCommand("JLT", index)
+case class GreaterThan(index: Int) extends ComparisonCommand("JGT", index)
 case object And extends CombiningCommand("&")
 case object Or extends CombiningCommand("|")
 case object Negative extends FlippingCommand("-")
