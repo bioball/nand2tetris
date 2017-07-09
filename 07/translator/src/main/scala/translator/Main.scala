@@ -19,7 +19,8 @@ object Main {
   def main (args: Array[String]) = {
     val lines = Source.fromFile(args(0)).getLines().toSeq
     val srcFilename = args(0).split("/").last
-    val commands = lines.flatMap(Command.parse(_, srcFilename))
+    val commands = lines
+      .flatMap(Command.parse(_, srcFilename))
     val asm = commands.mkString("\n\n//--------------------------------------\n\n")
     val filename = args(0).replaceAll("""\.vm""", ".asm")
     writeFile(filename, asm)

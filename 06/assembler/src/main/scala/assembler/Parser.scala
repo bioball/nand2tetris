@@ -21,6 +21,14 @@ object Parser {
   case class JumpCommand(binaryString: String)
   case class Computation(binaryString: String)
 
+  def removeComments(line: String) = line.split("""\/\/""").toSeq match {
+    case Seq(src, cmt) => src
+    case Seq(src) => src
+    case _ => line
+  }
+
+  def removeWhitespace(src: String) = src.replace(" ", "")
+
 }
 
 /**
@@ -36,14 +44,6 @@ class Parser {
   private val ACommandLabelRegex = """^@([A-Z0-9_\.]+)$""".r
   private val LabelRegex = """^\(([a-zA-Z0-9_\.]+)\)$""".r
   private val ACommandVariableRegex = """^@([a-z0-9_\.]+)$""".r
-
-  def removeComments(line: String) = line.split("""\/\/""").toSeq match {
-    case Seq(src, cmt) => src
-    case Seq(src) => src
-    case _ => line
-  }
-
-  def removeWhitespace(src: String) = src.replace(" ", "")
 
   def parse(src: String) = src
     .split("\r\n")

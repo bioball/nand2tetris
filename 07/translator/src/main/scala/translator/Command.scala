@@ -177,10 +177,6 @@ case class Push(segment: Segment, index: Int, filename: String) extends Command 
          |@SP
          |M=M+1 // increment stack pointer
        """.stripMargin
-    case other =>
-      s"""
-         |// *** TODO: push $other
-       """.stripMargin
   }
 }
 
