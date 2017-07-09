@@ -74,6 +74,7 @@ abstract class ComparisonCommand(jmpCmd: String, index: Int) extends Command {
       |A=M
       |M=-1
       |
+      |@SP
       |M=M+1 // Increment stack pointer.
     """.stripMargin
 }

@@ -40,16 +40,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_9 // need to make these labels unique.
 M-D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_9)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -98,16 +98,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_12 // need to make these labels unique.
 M-D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_12)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -156,16 +156,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_15 // need to make these labels unique.
 M-D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_15)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -214,16 +214,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_18 // need to make these labels unique.
 M-D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_18)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -272,16 +272,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_21 // need to make these labels unique.
 M-D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_21)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -330,16 +330,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_24 // need to make these labels unique.
 M-D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_24)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -388,16 +388,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_27 // need to make these labels unique.
 M-D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_27)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -446,16 +446,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_30 // need to make these labels unique.
 M-D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_30)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
@@ -504,16 +504,16 @@ D=M // Get value at pointer address, store in D.
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
 
-@COMPARETRUE
+@COMPARETRUE_33 // need to make these labels unique.
 M-D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
-(COMPARETRUE)
+(COMPARETRUE_33)
 @SP
 A=M
-M=1
+M=-1
 
 M=M+1 // Increment stack pointer.
     
