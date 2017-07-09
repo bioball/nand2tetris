@@ -35,16 +35,20 @@ case object This extends FixedSegment {
 case object That extends FixedSegment {
   override val register = "@4"
 }
-case object Pointer extends Segment {
-  def register(index: Int) = index match {
+
+sealed trait PredeterminedSegment extends Segment {
+  def register(index: Int, filename: String): String
+}
+case object Pointer extends PredeterminedSegment {
+  def register(index: Int, filename: String) = index match {
     case 0 => This.register
     case 1 => That.register
   }
 }
-case object Temp extends Segment {
-  def register(index: Int) = s"@${index + 5}"
+case object Temp extends PredeterminedSegment {
+  def register(index: Int, filename: String) = s"@${index + 5}"
 }
-case object Static extends Segment {
-  def register(index: Int) = s"@Static.$index"
+case object Static extends PredeterminedSegment {
+  def register(index: Int, filename: String) = s"@$filename.$index"
 }
 case object Constant extends Segment

@@ -41,51 +41,51 @@ M=M+1 // increment stack pointer
 //--------------------------------------
 
 
-// *** pop static 8
+// *** pop Static 8
 
 @SP
 M=M-1
 A=M
 D=M
 
-@Static.8
+@StaticTest.vm.8
 M=D
        
 
 //--------------------------------------
 
 
-// *** pop static 3
+// *** pop Static 3
 
 @SP
 M=M-1
 A=M
 D=M
 
-@Static.3
+@StaticTest.vm.3
 M=D
        
 
 //--------------------------------------
 
 
-// *** pop static 1
+// *** pop Static 1
 
 @SP
 M=M-1
 A=M
 D=M
 
-@Static.1
+@StaticTest.vm.1
 M=D
        
 
 //--------------------------------------
 
 
-// *** push static 3
+// *** push Static 3
 
-@Static.3
+@StaticTest.vm.3
 D=M
 
 @SP
@@ -99,9 +99,9 @@ M=M+1
 //--------------------------------------
 
 
-// *** push static 1
+// *** push Static 1
 
-@Static.1
+@StaticTest.vm.1
 D=M
 
 @SP
@@ -136,9 +136,9 @@ M=M+1 // Increment stack pointer.
 //--------------------------------------
 
 
-// *** push static 8
+// *** push Static 8
 
-@Static.8
+@StaticTest.vm.8
 D=M
 
 @SP
@@ -164,8 +164,7 @@ D=M // Get value at pointer address, store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
-D=M+D // get value at pointer address, and add D to it. Store value in D.
-M=D // store result back at register.
+M=M+D // store result back at register.
 
 @SP
 M=M+1 // Increment stack pointer.

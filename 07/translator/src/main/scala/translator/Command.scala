@@ -3,18 +3,18 @@ package translator
 object Command {
   val PUSH_REGEX = """^push\s(\w+)\s(\d+)$""".r
   val POP_REGEX = """^pop\s(\w+)\s(\d+)$""".r
-  def unapply(unparsed: String): Option[Command] = unparsed match {
+  def parse(unparsed: String, filename: String): Option[Command] = unparsed match {
     case "add" => Some(Add)
     case "sub" => Some(Subtract)
-    case "eq" =>
-    case "lt" =>
-    case "gt" =>
-    case "neg" =>
-    case "and" =>
-    case "or" =>
-    case "not" =>
-    case PUSH_REGEX(segment, idx) => Segment.unapply(segment).map(Push(_, idx.toInt))
-    case POP_REGEX(segment, idx) => Segment.unapply(segment).map(Pop(_, idx.toInt))
+//    case "eq" =>
+//    case "lt" =>
+//    case "gt" =>
+//    case "neg" =>
+//    case "and" =>
+//    case "or" =>
+//    case "not" =>
+    case PUSH_REGEX(segment, idx) => Segment.unapply(segment).map(Push(_, idx.toInt, filename))
+    case POP_REGEX(segment, idx) => Segment.unapply(segment).map(Pop(_, idx.toInt, filename))
     case other => None
   }
 }
@@ -39,8 +39,7 @@ case object Add extends Command {
       |@SP
       |M=M-1 // Decrement stack pointer.
       |A=M // get address of pointer, store in A.
-      |D=M+D // get value at pointer address, and add D to it. Store value in D.
-      |M=D // store result back at register.
+      |M=M+D // store result back at register.
       |
       |@SP
       |M=M+1 // Increment stack pointer.
@@ -77,7 +76,7 @@ case object Equals extends Command {
     """.stripMargin
 }
 
-case class Push(segment: Segment, index: Int) extends Command {
+case class Push(segment: Segment, index: Int, filename: String) extends Command {
   override def toString = segment match {
     case sgmt: FixedSegment =>
       s"""
@@ -96,10 +95,10 @@ case class Push(segment: Segment, index: Int) extends Command {
         |@SP
         |M=M+1 // Increment stack pointer
       """.stripMargin
-    case Temp =>
-      val register = Temp.register(index)
+    case sgmt: PredeterminedSegment =>
+      val register = sgmt.register(index, filename)
       s"""
-         |// *** push temp $index
+         |// *** push $sgmt $index
          |
          |$register
          |D=M
@@ -123,36 +122,6 @@ case class Push(segment: Segment, index: Int) extends Command {
          |@SP
          |M=M+1 // increment stack pointer
        """.stripMargin
-    case Pointer =>
-      val register = Pointer.register(index)
-      s"""
-         |// *** push pointer $index
-         |
-         |$register
-         |D=M
-         |
-         |@SP
-         |A=M
-         |M=D
-         |
-         |@SP
-         |M=M+1
-       """.stripMargin
-    case Static =>
-      val register = Static.register(index)
-      s"""
-         |// *** push static $index
-         |
-         |$register
-         |D=M
-         |
-         |@SP
-         |A=M
-         |M=D
-         |
-         |@SP
-         |M=M+1
-       """.stripMargin
     case other =>
       s"""
          |// *** TODO: push $other
@@ -160,7 +129,7 @@ case class Push(segment: Segment, index: Int) extends Command {
   }
 }
 
-case class Pop(segment: Segment, index: Int) extends Command {
+case class Pop(segment: Segment, index: Int, filename: String) extends Command {
   override def toString = segment match {
     case sgmt: FixedSegment =>
       s"""
@@ -185,36 +154,10 @@ case class Pop(segment: Segment, index: Int) extends Command {
         |A=M
         |M=D // store our popped value in the target address.
       """.stripMargin
-    case Pointer =>
-      val register = Pointer.register(index)
+    case sgmt: PredeterminedSegment =>
+      val register = sgmt.register(index, filename)
       s"""
-         |// *** pop pointer $index
-         |
-         |@SP
-         |M=M-1
-         |A=M
-         |D=M
-         |
-         |$register
-         |M=D
-       """.stripMargin
-    case Temp =>
-      val register = Temp.register(index)
-      s"""
-         |// *** pop temp $index
-         |
-         |@SP
-         |M=M-1
-         |A=M
-         |D=M
-         |
-         |$register
-         |M=D
-       """.stripMargin
-    case Static =>
-      val register = Static.register(index)
-      s"""
-         |// *** pop static $index
+         |// *** pop $sgmt $index
          |
          |@SP
          |M=M-1
