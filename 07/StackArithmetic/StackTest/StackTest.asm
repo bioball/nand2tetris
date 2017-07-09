@@ -29,28 +29,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JEQ ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_9 // need to make these labels unique.
-M-D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_9
+0;JMP
 (COMPARETRUE_9)
 @SP
 A=M
 M=-1
-
+(END_9)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -87,28 +95,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JEQ ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_12 // need to make these labels unique.
-M-D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_12
+0;JMP
 (COMPARETRUE_12)
 @SP
 A=M
 M=-1
-
+(END_12)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -145,28 +161,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JEQ ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_15 // need to make these labels unique.
-M-D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JEQ // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_15
+0;JMP
 (COMPARETRUE_15)
 @SP
 A=M
 M=-1
-
+(END_15)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -203,28 +227,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JLT ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_18 // need to make these labels unique.
-M-D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_18
+0;JMP
 (COMPARETRUE_18)
 @SP
 A=M
 M=-1
-
+(END_18)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -261,28 +293,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JLT ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_21 // need to make these labels unique.
-M-D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_21
+0;JMP
 (COMPARETRUE_21)
 @SP
 A=M
 M=-1
-
+(END_21)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -319,28 +359,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JLT ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_24 // need to make these labels unique.
-M-D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JLT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_24
+0;JMP
 (COMPARETRUE_24)
 @SP
 A=M
 M=-1
-
+(END_24)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -377,28 +425,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JGT ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_27 // need to make these labels unique.
-M-D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_27
+0;JMP
 (COMPARETRUE_27)
 @SP
 A=M
 M=-1
-
+(END_27)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -435,28 +491,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JGT ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_30 // need to make these labels unique.
-M-D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_30
+0;JMP
 (COMPARETRUE_30)
 @SP
 A=M
 M=-1
-
+(END_30)
+@SP
 M=M+1 // Increment stack pointer.
     
 
@@ -493,28 +557,36 @@ M=M+1 // increment stack pointer
 
 // *** comparison: JGT ***
 
-// Get value of M[SP-1], store in D
+// Get value of M[SP-1], store in R13
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // Get address of pointer, store in A.
 D=M // Get value at pointer address, store in D.
+@R13 // save to R13.
+M=D
 
-// Get value of M[SP-2]. Add to D.
+// Get value of M[SP-2]. Store in D.
 @SP
 M=M-1 // Decrement stack pointer.
 A=M // get address of pointer, store in A.
+D=M
+@R13
+D=D-M // subtract M[SP-1] from M[SP-2]
 
 @COMPARETRUE_33 // need to make these labels unique.
-M-D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
+D;JGT // subtract that value from D, and compared to zero. Jump based on comparison.
 // if we reach here, the comparison has failed.
 @SP
 A=M
 M=0
+@END_33
+0;JMP
 (COMPARETRUE_33)
 @SP
 A=M
 M=-1
-
+(END_33)
+@SP
 M=M+1 // Increment stack pointer.
     
 

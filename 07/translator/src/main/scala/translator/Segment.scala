@@ -24,16 +24,16 @@ sealed trait PredeterminedSegment extends Segment {
 }
 
 case object Local extends FixedSegment {
-  override val register = "@1"
+  override val register = "@R1"
 }
 case object Arg extends FixedSegment {
-  override val register = "@2"
+  override val register = "@R2"
 }
 case object This extends FixedSegment {
-  override val register = "@3"
+  override val register = "@R3"
 }
 case object That extends FixedSegment {
-  override val register = "@4"
+  override val register = "@R4"
 }
 
 case object Pointer extends PredeterminedSegment {
@@ -43,7 +43,7 @@ case object Pointer extends PredeterminedSegment {
   }
 }
 case object Temp extends PredeterminedSegment {
-  def register(index: Int, filename: String) = s"@${index + 5}"
+  def register(index: Int, filename: String) = s"@R${index + 5}"
 }
 case object Static extends PredeterminedSegment {
   def register(index: Int, filename: String) = s"@$filename.$index"
