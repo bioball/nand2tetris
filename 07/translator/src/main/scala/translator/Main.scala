@@ -19,6 +19,8 @@ object Main {
   def main (args: Array[String]) = {
     val lines = Source.fromFile(args(0)).getLines().toSeq
     val commands = Parser.parse(lines)
-    writeFile(s"${args(0)}.asm", commands.mkString("\n"))
+    val asm = commands.mkString("\n\n//--------------------------------------\n\n")
+    val filename = args(0).replaceAll("""\.vm""", ".asm")
+    writeFile(filename, asm)
   }
 }
