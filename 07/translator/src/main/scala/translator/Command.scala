@@ -72,7 +72,7 @@ abstract class ComparisonCommand(jmpCmd: String, index: Int) extends Command {
       |(COMPARETRUE_$index)
       |@SP
       |A=M
-      |M=1
+      |M=-1
       |
       |M=M+1 // Increment stack pointer.
     """.stripMargin
