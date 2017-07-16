@@ -1,8 +1,11 @@
 package translator
 
 object Command {
-  val PUSH_REGEX = """^push\s(\w+)\s(\d+)$""".r
-  val POP_REGEX = """^pop\s(\w+)\s(\d+)$""".r
+  val PUSH_REGEX = """^push\s(\w+)\s(\d+)""".r
+  val POP_REGEX = """^pop\s(\w+)\s(\d+)""".r
+  val LABEL_REGEX = """^label\s(\w+)""".r
+  val IF_GOTO_REGEX = """^if-goto\s(\w+)""".r
+  val GOTO_REGEX = """^goto\s(\w+)""".r
   def parse(unparsed: String, filename: String, index: Int): Option[Command] = {
     unparsed match {
       case "add" => Some(Add)
@@ -14,6 +17,9 @@ object Command {
       case "and" => Some(And)
       case "or" => Some(Or)
       case "not" => Some(Not)
+      case IF_GOTO_REGEX(label) => Some(IfGoto(label))
+      case GOTO_REGEX(label) => Some(Goto(label))
+      case LABEL_REGEX(label) => Some(Label(label))
       case PUSH_REGEX(segment, idx) => Segment.unapply(segment).map(Push(_, idx.toInt, filename))
       case POP_REGEX(segment, idx) => Segment.unapply(segment).map(Pop(_, idx.toInt, filename))
       case other => None
@@ -135,7 +141,6 @@ abstract class FlippingCommand(flip: String) extends Command {
     """.stripMargin
 }
 
-
 case object Add extends ArithmeticCommand("+")
 case object Subtract extends ArithmeticCommand("-")
 case class Equals(index: Int) extends ComparisonCommand("JEQ", index)
@@ -245,3 +250,10 @@ case class IfGoto(label: String) extends Command {
     """.stripMargin
 }
 
+case class Goto(label: String) extends Command {
+  override def writeAsm =
+    s"""
+      |@$label
+      |0;JMP
+    """.stripMargin
+}

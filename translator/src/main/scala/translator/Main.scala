@@ -41,7 +41,10 @@ object Main {
 
   def outFileName(in: String) = {
     val f = new File(in)
-    f.getName.split("""\.""").head + ".asm"
+    val filename = f.getName
+    val path = f.getCanonicalPath
+    println(f.getParentFile.getCanonicalPath)
+    f.getParentFile.getCanonicalPath + "/" + filename.replaceAll("\\.vm", "") + ".asm"
   }
 
   def main (args: Array[String]) = {
