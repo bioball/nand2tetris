@@ -3,32 +3,44 @@ package translator
 object Command {
   val PUSH_REGEX = """^push\s(\w+)\s(\d+)$""".r
   val POP_REGEX = """^pop\s(\w+)\s(\d+)$""".r
-  def parse(unparsed: String, filename: String, index: Int): Option[Command] = unparsed match {
-    case "add" => Some(Add)
-    case "sub" => Some(Subtract)
-    case "eq" => Some(Equals(index))
-    case "lt" => Some(LessThan(index))
-    case "gt" => Some(GreaterThan(index))
-    case "neg" => Some(Negative)
-    case "and" => Some(And)
-    case "or" => Some(Or)
-    case "not" => Some(Not)
-    case PUSH_REGEX(segment, idx) => Segment.unapply(segment).map(Push(_, idx.toInt, filename))
-    case POP_REGEX(segment, idx) => Segment.unapply(segment).map(Pop(_, idx.toInt, filename))
-    case other => None
+  def parse(unparsed: String, filename: String, index: Int): Option[Command] = {
+    unparsed match {
+      case "add" => Some(Add)
+      case "sub" => Some(Subtract)
+      case "eq" => Some(Equals(index))
+      case "lt" => Some(LessThan(index))
+      case "gt" => Some(GreaterThan(index))
+      case "neg" => Some(Negative)
+      case "and" => Some(And)
+      case "or" => Some(Or)
+      case "not" => Some(Not)
+      case PUSH_REGEX(segment, idx) => Segment.unapply(segment).map(Push(_, idx.toInt, filename))
+      case POP_REGEX(segment, idx) => Segment.unapply(segment).map(Pop(_, idx.toInt, filename))
+      case other => None
+    }
   }
+
+  def toAsm(unparsed: String, filename: String, index: Int): Option[String] = parse(unparsed, filename, index).map(cmd =>
+    s"""
+      |// *** $unparsed
+      |
+      |${cmd.writeAsm}
+    """.stripMargin)
 }
 
 /**
  * Created by danielchao on 7/8/17.
  */
-sealed trait Command
+sealed trait Command {
+
+  def writeAsm: String
+
+}
+
 
 abstract class ArithmeticCommand(symbol: String) extends Command {
-  override def toString =
+  override def writeAsm =
     s"""
-      |// *** arithmetic $symbol ***
-      |
       |// Get value of M[SP-1], store in D
       |@SP
       |M=M-1 // Decrement stack pointer.
@@ -48,10 +60,8 @@ abstract class ArithmeticCommand(symbol: String) extends Command {
 
 // index is passed in so we can make the labels unique.
 abstract class ComparisonCommand(jmpCmd: String, index: Int) extends Command {
-  override def toString =
+  override def writeAsm =
     s"""
-      |// *** comparison: $jmpCmd ***
-      |
       |// Get value of M[SP-1], store in R13
       |@SP
       |M=M-1 // Decrement stack pointer.
@@ -87,10 +97,8 @@ abstract class ComparisonCommand(jmpCmd: String, index: Int) extends Command {
 }
 
 abstract class CombiningCommand(combination: String) extends Command {
-  override def toString =
+  override def writeAsm =
     s"""
-       |// *** combination: $combination ***
-       |
        |// Get value of M[SP-1], store in D
        |@SP
        |M=M-1 // Decrement stack pointer.
@@ -114,10 +122,8 @@ abstract class CombiningCommand(combination: String) extends Command {
 }
 
 abstract class FlippingCommand(flip: String) extends Command {
-  override def toString =
+  override def writeAsm =
     s"""
-      |// *** flip: $flip ***
-      |
       |// Get value of M[SP-1], store in D
       |@SP
       |M=M-1 // Decrement stack pointer.
@@ -141,11 +147,9 @@ case object Negative extends FlippingCommand("-")
 case object Not extends FlippingCommand("!")
 
 case class Push(segment: Segment, index: Int, filename: String) extends Command {
-  override def toString = segment match {
+  override def writeAsm = segment match {
     case sgmt: FixedSegment =>
       s"""
-        |// *** push $segment $index
-        |
         |@$index
         |D=A // Store $index in D
         |${sgmt.register}
@@ -162,8 +166,6 @@ case class Push(segment: Segment, index: Int, filename: String) extends Command 
     case sgmt: PredeterminedSegment =>
       val register = sgmt.register(index, filename)
       s"""
-         |// *** push $sgmt $index
-         |
          |$register
          |D=M
          |
@@ -176,8 +178,6 @@ case class Push(segment: Segment, index: Int, filename: String) extends Command 
        """.stripMargin
     case Constant =>
       s"""
-         |// *** push constant $index
-         |
          |@$index
          |D=A // set D to $index
          |@SP
@@ -190,11 +190,9 @@ case class Push(segment: Segment, index: Int, filename: String) extends Command 
 }
 
 case class Pop(segment: Segment, index: Int, filename: String) extends Command {
-  override def toString = segment match {
+  override def writeAsm = segment match {
     case sgmt: FixedSegment =>
       s"""
-        |// *** pop $segment $index
-        |
         |// get register that we should pop into, store at @R13.
         |@$index
         |D=A
@@ -216,8 +214,6 @@ case class Pop(segment: Segment, index: Int, filename: String) extends Command {
     case sgmt: PredeterminedSegment =>
       val register = sgmt.register(index, filename)
       s"""
-         |// *** pop $sgmt $index
-         |
          |@SP
          |M=M-1
          |A=M
@@ -229,3 +225,23 @@ case class Pop(segment: Segment, index: Int, filename: String) extends Command {
     case Constant => sys.error("It don't make no sense to pop to constants bruh")
   }
 }
+
+case class Label(name: String) extends Command {
+  override def writeAsm =
+    s"""
+      |($name)
+    """.stripMargin
+}
+
+case class IfGoto(label: String) extends Command {
+  override def writeAsm =
+    s"""
+      |@SP
+      |M=M-1 // SP--
+      |A=M
+      |D=M // get the topmost value of the stack, and store it in D.
+      |@$label
+      |D;JNE // if D is not 0, jump.
+    """.stripMargin
+}
+
