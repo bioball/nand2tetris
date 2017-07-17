@@ -1,0 +1,7 @@
+// identity function
+function identity 0
+push local 0
+return
+
+push 5
+call identity 1

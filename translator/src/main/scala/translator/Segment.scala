@@ -24,16 +24,16 @@ sealed trait PredeterminedSegment extends Segment {
 }
 
 case object Local extends FixedSegment {
-  override val register = "@R1"
+  override val register = "@LCL"
 }
 case object Arg extends FixedSegment {
-  override val register = "@R2"
+  override val register = "@ARG"
 }
 case object This extends FixedSegment {
-  override val register = "@R3"
+  override val register = "@THIS"
 }
 case object That extends FixedSegment {
-  override val register = "@R4"
+  override val register = "@THAT"
 }
 
 case object Pointer extends PredeterminedSegment {
