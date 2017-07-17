@@ -1,0 +1,10 @@
+A translator for the Hack computer platform. This translates VM-level commands to Hack assembly code.
+
+Usage:
+
+./VMTranslator <input_file>
+
+
+If a single file is passed in, it will simply translate that single file and place an output file in the same directory.
+
+If a directory is passed in, it will iterate through the `.vm` files and translate each one, and place a bootstrap code at the head of the assembly output. You must define a `Sys.init` function.

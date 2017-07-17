@@ -98,7 +98,7 @@ M=D
     
     
 
-// *** push constant 4000	// test THIS and THAT context save
+// *** push constant 4000
 
 
 @4000
@@ -154,7 +154,7 @@ M=D
 
 
 // push return address.
-@Sys.init$ret_12
+@Sys.vm$ret_5
 D=A // get address that we should return to, store in D
 @SP
 A=M
@@ -232,7 +232,7 @@ M=D
 0;JMP
 
 // create label for return address
-(Sys.init$ret_12)
+(Sys.vm$ret_5)
     
     
 
@@ -252,14 +252,14 @@ M=D
 // *** label LOOP
 
 
-(Sys.init$LOOP)
+(Sys.vm$LOOP)
     
     
 
 // *** goto LOOP
 
 
-@Sys.init$LOOP
+@Sys.vm$LOOP
 0;JMP
     
     
@@ -494,7 +494,7 @@ M=M+1 // increment stack pointer
 
 
 // push return address.
-@Sys.main$ret_37
+@Sys.vm$ret_21
 D=A // get address that we should return to, store in D
 @SP
 A=M
@@ -572,7 +572,7 @@ M=D
 0;JMP
 
 // create label for return address
-(Sys.main$ret_37)
+(Sys.vm$ret_21)
     
     
 

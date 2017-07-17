@@ -3,4 +3,4 @@
 sbt assembly
 mv -f ./target/scala-2.11/translator.jar ./submission/translator.jar
 cd ./submission/
-zip -r ../project7.zip ./*
+zip -r ../project8.zip ./*

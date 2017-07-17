@@ -56,11 +56,9 @@ object Main {
     }
   }
 
-  def removeComments(line: String) = line.split("""\/\/""").toSeq match {
-    case Seq(src, cmt) => src
-    case Seq(src) => src
-    case _ => line
-  }
+  def removeComments(line: String) = if (line.indexOf("//") > -1) {
+    line.substring(0, line.indexOf("//"))
+  } else line
 
   /**
    * If the input is a directory, we need to write the startup code. Otherwise, we can skip.
