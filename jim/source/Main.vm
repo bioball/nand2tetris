@@ -1,9 +1,6 @@
-function Main.main 2
-call Document.new 0
+function Main.main 1
+call Runner.new 0
 pop local 0
-push local 0
-call Runner.new 1
-pop local 1
 push constant 90
 call String.new 1
 push constant 87
@@ -646,7 +643,7 @@ call Output.printString 1
 pop temp 0
 call Printer.init 0
 pop temp 0
-push local 1
+push local 0
 call Runner.init 1
 pop temp 0
 push constant 0

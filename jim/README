@@ -2,3 +2,8 @@ Jim
 ===
 
 This is "Jack vim". It's written as part of the coding assignment for part 9 of Coursera's Nand 2 Tetris.
+
+
+Instructions:
+
+Initially, Jim starts out in normal mode, and you may move the cursor around via the `hjkl` keys. Switch to insert mode via the `i` key. From insert mode, you may switch back to normal mode via the `escape` key.
