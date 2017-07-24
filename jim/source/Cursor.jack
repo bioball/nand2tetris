@@ -1,0 +1,56 @@
+class Cursor {
+  field int x;
+  field int y;
+  
+  constructor Cursor new (int Ax, int Ay) {
+    let x = Ax;
+    let y = Ay;
+    return this;
+  }
+
+  method int x () {
+    return x;
+  }
+
+  method int y () {
+    return y;
+  }
+
+  method void set (int aX, int aY) {
+    do Printer.renderCursor(this);
+    let x = aX;
+    let y = aY;
+    do Printer.renderCursor(this);
+    return;
+  }
+
+  /**
+   * Increment the cursor.
+   * Will wrap around if need be.
+   */
+  method void inc () {
+    do Printer.renderCursor(this);
+    if (x > 31) {
+      let x = -1;
+      let y = y + 1;
+    }
+    let x = x + 1;
+    do Printer.renderCursor(this);
+    return;
+  }
+
+  /**
+   * Decrement the cursor.
+   * Will wrap around if need be.
+   */
+  method void dec () {
+    do Printer.renderCursor(this);
+    if (x = 0) {
+      let x = 32;
+      let y = y - 1;
+    }
+    let x = x - 1;
+    do Printer.renderCursor(this);
+    return;
+  }
+}

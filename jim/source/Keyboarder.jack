@@ -1,0 +1,28 @@
+class Keyboarder {
+  field char currentKey;
+
+  constructor Keyboarder new () {
+    return this;
+  }
+  /**
+   * Abstraction on top of the OS Keyboard method. It debounces key presses; if the same key press
+   * is sampled more than once, they are discarded.
+   *
+   * Will block and wait on a key input.
+   */
+  method char getKey () {
+    var char key;
+    let key = Keyboard.keyPressed();
+    while ((key = 0) | (key = currentKey)) {
+      // if the user lets go of that key, the currentKey should also be reset to 0. This allows you
+      // to type the same letter twice.
+      if (key = 0) {
+        let currentKey = 0;
+      }
+      let key = Keyboard.keyPressed();
+    }
+    let currentKey = key;
+    return key;
+  }
+
+}

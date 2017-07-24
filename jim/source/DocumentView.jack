@@ -1,0 +1,19 @@
+class DocumentView {
+  field Document document;
+  /**
+   * Keep track of the current document that is rendered to the screen.
+   * Upon each call to render, we'll do a diff between the new document and
+   * what we currently have, and append/remove characters.
+   */
+  field string _curr;
+  constructor DocumentView new (Document doc) {
+    let document = doc;
+    return this;
+  }
+
+  method void render () {
+    do Output.printString(document.contents());
+    return;
+  }
+
+}

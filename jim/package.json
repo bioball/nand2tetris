@@ -1,0 +1,16 @@
+{
+  "name": "jim",
+  "version": "1.0.0",
+  "description": "This is an implementation of vim in the Jack language. It's written in accordance to Project 9's assignment in the Nand 2 Tetris course on Coursera.",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-watch": "^4.3.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

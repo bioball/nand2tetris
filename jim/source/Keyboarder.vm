@@ -1,0 +1,38 @@
+function Keyboarder.new 0
+push constant 1
+call Memory.alloc 1
+pop pointer 0
+push pointer 0
+return
+function Keyboarder.getKey 1
+push argument 0
+pop pointer 0
+call Keyboard.keyPressed 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+eq
+push local 0
+push this 0
+eq
+or
+not
+if-goto WHILE_END0
+push local 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop this 0
+label IF_FALSE0
+call Keyboard.keyPressed 0
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+pop this 0
+push local 0
+return

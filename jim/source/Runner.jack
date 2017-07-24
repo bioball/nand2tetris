@@ -1,0 +1,90 @@
+class Runner {
+  /**
+   * The current document.
+   */
+  field String _doc;
+
+  field Document document;
+  /**
+   * The current mode.
+   * 0 = NORMAL
+   * 1 = INSERT
+   */
+  field int mode;
+
+  field Keyboarder keyboarder;
+
+  field Cursor cursor;
+
+  constructor Runner new (Document doc) {
+    let _doc = "";
+    let document = doc;
+    let mode = 1;
+    let keyboarder = Keyboarder.new();
+    let cursor = Cursor.new(0, 0);
+    return this;
+  }
+
+  method void init () {
+    do enterMode(mode);
+    return;
+  }
+
+  method void enterMode (int mode) {
+    if (mode = 1) {
+      do runInsertMode();
+    }
+    if (mode = 0) {
+      do runNormalMode();
+    }
+    return;
+  }
+
+  method void runNormalMode () {
+    return;
+  }
+
+  method void runInsertMode () {
+    var char key;
+    while (true) {
+      let key = keyboarder.getKey();
+      // ASCII
+      if (key > 31 & key < 127) {
+        do handleAppendChar(key);
+      }
+      // Backspace
+      if (key = 129) {
+        do handleBackspace();
+      }
+      // Enter
+      if (key = 128) {
+        do handleEnter();
+      }
+      // ESC
+      if (key = 27) {
+        let mode = 0;
+        return;
+      }
+    }
+    return;
+  }
+
+  method void handleEnter () {
+    do cursor.set(0, cursor.y() + 1);
+    return;
+  }
+
+  method void handleBackspace () {
+    do cursor.dec();
+    do Printer.print(32, cursor);
+    return;
+  }
+
+  method void handleAppendChar (char c) {
+    do document.appendChar(c);
+    do Printer.print(c, cursor);
+    do cursor.inc();
+    return;
+  }
+
+}

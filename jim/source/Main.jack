@@ -1,0 +1,13 @@
+class Main {
+
+  function void main () {
+    var Document doc;
+    var Runner runner;
+    let doc = Document.new();
+    let runner = Runner.new(doc);
+    do Printer.init();
+    do runner.init();
+    return;
+  }
+
+}

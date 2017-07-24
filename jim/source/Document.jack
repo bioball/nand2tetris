@@ -1,0 +1,29 @@
+/**
+ * A document is the model behind a single document in jackdocs.
+ */
+class Document {
+  /**
+   * The underlying document.
+   */
+  field String doc;
+
+  constructor Document new () {
+    let doc = String.new(512);
+    return this;
+  }
+
+  method void clear () {
+    let doc = "";
+    return;
+  }
+  
+  method String contents () {
+    return doc;
+  }
+
+  method void appendChar (char c) {
+    do doc.appendChar(c);
+    return;
+  }
+
+}
