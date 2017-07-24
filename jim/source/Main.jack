@@ -5,6 +5,8 @@ class Main {
     var Runner runner;
     let doc = Document.new();
     let runner = Runner.new(doc);
+    do Output.printString("W E L C O M E   T O   J I M !   T H I S   I S   A   T I N Y   S U B S E T   OF   V I M.   ");
+    do Output.printString("I N S T R U C T I O N S :   P R E S S   ' H J K L '   T O   M O V E   T H E   C U R S O R   A R O U N D .   T O   T Y P E ,   P R E S S   ' I ' .   T O   G O   B A C K   T O   I N S E R T   M O D E,   P R E S S   E S C A P E .");
     do Printer.init();
     do runner.init();
     return;

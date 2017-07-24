@@ -2,8 +2,10 @@ class Keyboarder {
   field char currentKey;
 
   constructor Keyboarder new () {
+    let currentKey = 0;
     return this;
   }
+
   /**
    * Abstraction on top of the OS Keyboard method. It debounces key presses; if the same key press
    * is sampled more than once, they are discarded.

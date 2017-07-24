@@ -7,6 +7,9 @@ pop this 0
 push argument 1
 pop this 1
 push pointer 0
+call Printer.renderCursor 1
+pop temp 0
+push pointer 0
 return
 function Cursor.x 0
 push argument 0
@@ -21,9 +24,6 @@ return
 function Cursor.set 0
 push argument 0
 pop pointer 0
-push pointer 0
-call Printer.renderCursor 1
-pop temp 0
 push argument 1
 pop this 0
 push argument 2
@@ -36,9 +36,6 @@ return
 function Cursor.inc 0
 push argument 0
 pop pointer 0
-push pointer 0
-call Printer.renderCursor 1
-pop temp 0
 push this 0
 push constant 31
 gt
@@ -65,9 +62,6 @@ return
 function Cursor.dec 0
 push argument 0
 pop pointer 0
-push pointer 0
-call Printer.renderCursor 1
-pop temp 0
 push this 0
 push constant 0
 eq

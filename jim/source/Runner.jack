@@ -16,17 +16,22 @@ class Runner {
 
   field Cursor cursor;
 
+  field boolean exit;
+
   constructor Runner new (Document doc) {
     let _doc = "";
     let document = doc;
-    let mode = 1;
+    let mode = 0;
     let keyboarder = Keyboarder.new();
     let cursor = Cursor.new(0, 0);
+    let exit = false;
     return this;
   }
 
   method void init () {
-    do enterMode(mode);
+    while (~exit) {
+      do enterMode(mode); 
+    }
     return;
   }
 
@@ -41,6 +46,19 @@ class Runner {
   }
 
   method void runNormalMode () {
+    var char key;
+    while (true) {
+      let key = keyboarder.getKey();
+      // i. enter insert mode.
+      if (key = 73) {
+        let mode = 1;
+        return;
+      }
+      // Navigation commands. 'hjkl'
+      if ((key > 73 & key < 77) | (key = 72)) {
+        do handleNavigationNormal(key);
+      }
+    }
     return;
   }
 
@@ -61,7 +79,7 @@ class Runner {
         do handleEnter();
       }
       // ESC
-      if (key = 27) {
+      if (key = 140) {
         let mode = 0;
         return;
       }
@@ -70,13 +88,18 @@ class Runner {
   }
 
   method void handleEnter () {
+    do Printer.renderCursor(cursor);
     do cursor.set(0, cursor.y() + 1);
     return;
   }
 
   method void handleBackspace () {
+    // print out a whitespace where the cursor currently is.
+    if ((cursor.x() = 0) & (cursor.y() = 0)) { return; }
+    do Printer.print(32, cursor);
     do cursor.dec();
     do Printer.print(32, cursor);
+    do Printer.renderCursor(cursor);
     return;
   }
 
@@ -87,4 +110,34 @@ class Runner {
     return;
   }
 
+  method void handleNavigationNormal (char c) {
+    // revert original cursor.
+    var int y;
+    do Printer.renderCursor(cursor);
+    // H
+    if (c = 72) {
+      do cursor.dec();
+    }
+    // J
+    if (c = 74) {
+      let y = cursor.y() + 1;
+      if (y > 22) {
+        let y = 22;
+      }
+      do cursor.set(cursor.x(), y);
+    }
+    // K
+    if (c = 75) {
+      let y = cursor.y() - 1;
+      if (y < 0) {
+        let y = 0;
+      }
+      do cursor.set(cursor.x(), y);
+    }
+    // L
+    if (c = 76) {
+      do cursor.inc();
+    }
+    return;
+  }
 }

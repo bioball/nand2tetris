@@ -165,13 +165,22 @@ class Printer {
     return charMaps[c];
   }
 
+  function void printString (String str, int x, int y) {
+    var int i;
+    var char c;
+    let i = 0;
+    while (i < str.length()) {
+      let c = str.charAt(i);
+      do Printer.printChar(c, x, y + i);
+      let i = i + 1;
+    }
+    return;
+  }
+
   /**
-   * Prints a char at cursor position X and Y.
-   * We can fit 64 chars per line, and 23 lines total on the screen.
-   * x: must be between 0 and 64
-   * y: must be between 0 and 23
+   * Prints a char at position X and Y.
    */
-  function void print (char c, Cursor cursor) {
+  function void printChar (char c, int x, int y) {
     var int i;
     var Array sprite;
     var int addr;
@@ -179,10 +188,18 @@ class Printer {
     let i = 0;
     while (i < 11) {
       // 32 bytes per row.
-      let addr = 16384 + cursor.x() + (cursor.y() * 32 * height) + (i * 32);
+      let addr = 16384 + x + (y * 32 * height) + (i * 32);
       do Memory.poke(addr, sprite[i]);
       let i = i + 1;
     }
+    return;
+  }
+
+  /**
+   * Prints a char at cursor position X and Y.
+   */
+  function void print (char c, Cursor cursor) {
+    do Printer.printChar(c, cursor.x(), cursor.y());
     return;
   }
 
