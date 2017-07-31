@@ -1,6 +1,6 @@
 import java.io.{PrintWriter, File}
 
-import compiler.tokenizer.Tokenizer
+import analyzer.tokenizer.Tokenizer
 
 import scala.io.Source
 

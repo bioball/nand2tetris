@@ -1,7 +1,7 @@
-package compiler.tokenizer
+package analyzer.tokenizer
 
 import scala.annotation.tailrec
-import scala.xml.{PrettyPrinter, NodeSeq}
+import scala.xml.PrettyPrinter
 
 /**
  * Parses Jack programs into a set of tokens.
@@ -14,13 +14,15 @@ object Tokenizer {
     if (remaining.isEmpty) {
       return tokens
     }
+    // if it's whitespace, we can ignore.
     if (candidate == " ") {
       doProcess(remaining.tail, remaining.head.toString, tokens)
     } else {
-      println(candidate + " " + remaining.headOption)
       MaybeToken(candidate, remaining.headOption) match {
-        case Token(tok) => doProcess(remaining.tail, remaining.head.toString, tokens :+ tok)
-        case _ => doProcess(remaining.tail, candidate + remaining.head, tokens)
+        case Token(tok) =>
+          doProcess(remaining.tail, remaining.head.toString, tokens :+ tok)
+        case _ => 
+          doProcess(remaining.tail, candidate + remaining.head, tokens)
       }
     }
   }

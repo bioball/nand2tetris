@@ -1,4 +1,4 @@
-package compiler.tokenizer
+package analyzer.tokenizer
 
 import enumeratum._
 
@@ -112,7 +112,7 @@ object Identifier {
   
   def unapply(src: MaybeToken): Option[Identifier] = src match {
     case _ if src.token.isEmpty => None
-    case s if startsWithLetter(src.token) && src.lookahead.exists(Symbol.isSymbol) || src.lookahead.contains(' ') =>
+    case s if startsWithLetter(src.token) && (src.lookahead.exists(Symbol.isSymbol) || src.lookahead.contains(' ')) =>
       Some(Identifier(src.token))
     case _ => None
   }
@@ -124,7 +124,7 @@ case class StringConstant(value: String) extends Token {
 
 object StringConstant {
   def unapply(src: MaybeToken): Option[StringConstant] = src match {
-    case _ if src.token.isEmpty => None
+    case _ if src.token.length < 2 => None
     case s if src.token.charAt(0) == '"' && src.token.last == '"' => 
       Some(StringConstant(src.token.substring(1, src.token.length - 1)))
     case _ => None
